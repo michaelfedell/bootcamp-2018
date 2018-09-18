@@ -1,0 +1,157 @@
+---
+title: "R Day 2"
+author: "Michael Fedell"
+date: "9/18/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+To access a single function or resource from a package not yet loaded, use
+<package_name>::<resource_name>
+
+here::here() is useful for accessing current pwd - e.g. so long as repo is the same for all users, does not matter where repo exists in filesystem running project
+```{r}
+here::here('data', 'gapminder5.csv')
+
+gapminder <- read.csv(here::here('data', 'gapminder5.csv'))
+str(gapminder)
+```
+
+## Converting factors to characters
+
+```{r}
+gapminder$country <- as.character(gapminder$country)
+gapminder$continent <- as.character(gapminder$continent)
+str(gapminder)
+```
+
+## Reporting average life expectancy per country
+
+To find the average life expectancy for a country, can subset the data like:
+```{r}
+gapminder$lifeExp[gapminder$country == 'Albania']
+
+gapminder$lifeExp[gapminder$country == 'Afghanistan']
+```
+
+But to view all, set up a loop for each country in the data.
+```{r}
+for (country in gapminder$country) {
+  (gapminder$lifeExp[gapminder$country == country])
+}
+```
+
+*Note!:* Avoid for loops in R when possible, they are expensive and slow!
+
+Let's recover GDP for each country
+```{r}
+# create a vector of values that you want to repeat the function for
+obs <- 1:nrow(gapminder)
+
+# initialize the for loop with `for (i in vector)`
+for (i in obs) { # the function to repeat is enclosed in braces
+  gapminder[i, 'gdp'] <- gapminder[i, 'pop'] * gapminder[i, 'gdpPercap']
+}
+```
+
+And do some normalization as well!
+```{r}
+for (i in obs) { # the function to repeat is enclosed in braces
+  gapminder[i, 'log_gdpPercap'] <- log(gapminder[i, 'gdpPercap'])
+  gapminder[i, 'log_pop'] <- log(gapminder[i, 'pop'])
+}
+str(gapminder)
+```
+
+```{r}
+years <- unique(gapminder$year)
+
+for (year in years) {
+  mean_le <- mean(gapminder$lifeExp[gapminder$year == year],
+                  na.rm=T)
+  print(paste0(year, ': ', mean_le))
+}
+```
+
+Find continent with the greatest mean life expectancy
+```{r}
+continents <- unique(gapminder$continent)
+
+for (cont in continents) {
+  mean.le <- mean(gapminder$lifeExp[gapminder$continent == cont], na.rm=T)
+  print(paste0(cont, ': ', mean.le))
+}
+```
+
+```{r}
+for (cont in continents) {
+  print(cont)
+  for (year in years) {
+    le.dev <- sd(gapminder$lifeExp[gapminder$continent == cont & gapminder$year == year])
+    print(paste0('life exp SD in ', year, ': ', le.dev))
+  }
+}
+```
+
+```{r}
+vars <- gapminder[, c("lifeExp", "pop", "gdpPercap")]
+apply(vars, 2, mean)
+```
+
+```{r}
+lapply(gapminder, mean)
+```
+
+```{r}
+sapply(gapminder, mean)
+```
+
+```{r}
+sapply(years, function(x) mean(gapminder$lifeExp[gapminder$year == x]))
+```
+
+```{r}
+year <- 1987
+
+while (year <= 2002) {
+  sd.le <- sd(gapminder$lifeExp[gapminder$year == year])
+  print(paste0(year, ': ', sd.le))
+  year <- year + 5
+}
+```
+
+```{r}
+for (year in unique(gapminder$year)) {
+  if (year >= 1987) {
+    print(paste0(year, ': ', mean(gapminder$pop))) 
+  } else {
+    print(paste0(year, ' out of range'))
+  }
+}
+```
+
+```{r}
+get_values <- function(df, col='continent') {
+  vals <- unique(df[[col]])
+  print(paste0(col, ': ', vals))
+  return(vals)
+}
+```
+
+```{r}
+report.stats <- function(df, cont) {
+  le.mean <- mean(gapminder$lifeExp[gapminder$continent == cont])
+  le.med <- median(gapminder$lifeExp[gapminder$continent == cont])
+  le.min <- min(gapminder$lifeExp[gapminder$continent == cont])
+  le.max <- max(gapminder$lifeExp[gapminder$continent == cont])
+  cat('Life Expectancy for: ', cont,
+      '\n\tMean: ', le.mean,
+      '\n\tMedian: ', le.med,
+      '\n\tMin: ', le.min,
+      '\n\tMax: ', le.max)
+}
+```
