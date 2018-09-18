@@ -391,6 +391,183 @@ while (year &lt;= 2002) {
       '\n\tMax: ', le.max)
 }</code></pre>
 </div>
+<div id="supplementary-exercises" class="section level2">
+<h2>Supplementary Exercises</h2>
+<pre class="r"><code>if (2002 %in% unique(gapminder$year)) {
+  print('Data found for 2002')
+} else {
+  print('No data for 2002')
+}</code></pre>
+<pre><code>## [1] &quot;Data found for 2002&quot;</code></pre>
+<pre class="r"><code>if (2012 %in% unique(gapminder$year)) {
+  print('Data found for 2012')
+} else {
+  print('No data for 2012')
+}</code></pre>
+<pre><code>## [1] &quot;No data for 2012&quot;</code></pre>
+<div id="loop-and-if-statements" class="section level3">
+<h3>Loop and If Statements</h3>
+<p>Finds the mean life expectancy by country for countries whose population is below the mean for the dataset</p>
+<pre class="r"><code>mean.le &lt;- mean(gapminder$lifeExp)
+cat('The following countries have an average life expectancy below the global average (', mean.le, '):\n=======================================\n')</code></pre>
+<pre><code>## The following countries have an average life expectancy below the global average ( 59.47444 ):
+## =======================================</code></pre>
+<pre class="r"><code>for (country in unique(gapminder$country)) {
+  country.mean &lt;- mean(gapminder$lifeExp[gapminder$country == country])
+  if (country.mean &lt; mean.le) {
+    cat('  &gt; ', country, ': ', country.mean, '\n')
+  }
+}</code></pre>
+<pre><code>##   &gt;  Afghanistan :  37.47883 
+##   &gt;  Algeria :  59.03017 
+##   &gt;  Angola :  37.8835 
+##   &gt;  Bangladesh :  49.83408 
+##   &gt;  Benin :  48.77992 
+##   &gt;  Bolivia :  52.50458 
+##   &gt;  Botswana :  54.5975 
+##   &gt;  Burkina Faso :  44.694 
+##   &gt;  Burundi :  44.81733 
+##   &gt;  Cambodia :  47.90275 
+##   &gt;  Cameroon :  48.1285 
+##   &gt;  Central African Republic :  43.86692 
+##   &gt;  Chad :  46.77358 
+##   &gt;  Comoros :  52.38175 
+##   &gt;  Congo Dem. Rep. :  44.54375 
+##   &gt;  Congo Rep. :  52.50192 
+##   &gt;  Cote d'Ivoire :  48.43617 
+##   &gt;  Djibouti :  46.38075 
+##   &gt;  Egypt :  56.243 
+##   &gt;  Equatorial Guinea :  42.96 
+##   &gt;  Eritrea :  45.99925 
+##   &gt;  Ethiopia :  44.47575 
+##   &gt;  Gabon :  51.2205 
+##   &gt;  Gambia :  44.40058 
+##   &gt;  Ghana :  52.34067 
+##   &gt;  Guatemala :  56.72942 
+##   &gt;  Guinea :  43.23983 
+##   &gt;  Guinea-Bissau :  39.21025 
+##   &gt;  Haiti :  50.16525 
+##   &gt;  Honduras :  57.92083 
+##   &gt;  India :  53.16608 
+##   &gt;  Indonesia :  54.33575 
+##   &gt;  Iran :  58.63658 
+##   &gt;  Iraq :  56.58175 
+##   &gt;  Kenya :  52.681 
+##   &gt;  Lesotho :  50.00708 
+##   &gt;  Liberia :  42.47625 
+##   &gt;  Libya :  59.30417 
+##   &gt;  Madagascar :  47.77058 
+##   &gt;  Malawi :  43.35158 
+##   &gt;  Mali :  43.4135 
+##   &gt;  Mauritania :  52.30208 
+##   &gt;  Mongolia :  55.89033 
+##   &gt;  Morocco :  57.60883 
+##   &gt;  Mozambique :  40.3795 
+##   &gt;  Myanmar :  53.32167 
+##   &gt;  Namibia :  53.49133 
+##   &gt;  Nepal :  48.98633 
+##   &gt;  Nicaragua :  58.34942 
+##   &gt;  Niger :  44.55867 
+##   &gt;  Nigeria :  43.58133 
+##   &gt;  Oman :  58.44267 
+##   &gt;  Pakistan :  54.88225 
+##   &gt;  Peru :  58.85933 
+##   &gt;  Rwanda :  41.48158 
+##   &gt;  Sao Tome and Principe :  57.89633 
+##   &gt;  Saudi Arabia :  58.67875 
+##   &gt;  Senegal :  50.62592 
+##   &gt;  Sierra Leone :  36.76917 
+##   &gt;  Somalia :  40.98867 
+##   &gt;  South Africa :  53.99317 
+##   &gt;  Sudan :  48.4005 
+##   &gt;  Swaziland :  49.00242 
+##   &gt;  Tanzania :  47.91233 
+##   &gt;  Togo :  51.49875 
+##   &gt;  Uganda :  47.61883 
+##   &gt;  Vietnam :  57.4795 
+##   &gt;  Yemen Rep. :  46.78042 
+##   &gt;  Zambia :  45.99633 
+##   &gt;  Zimbabwe :  52.66317</code></pre>
+<p>Loops through the gapminder data by continent and prints out whether the mean life expectancy is smaller than 50, between 50 and 70, or greater than 70.</p>
+<pre class="r"><code>for (continent in unique(gapminder$continent)) {
+  if (mean(gapminder$lifeExp[gapminder$continent == continent] &lt; 50)) {
+    cat('Life Expectancy of', continent, 'is less than 50\n')
+  }
+  else if (mean(gapminder$lifeExp[gapminder$continent == continent] &lt;= 70)) {
+    cat('Life Expectancy of', continent, 'is between 50 and 70\n')
+  }
+  else if (mean(gapminder$lifeExp[gapminder$continent == continent] &gt; 70)) {
+    cat('Life Expectancy of', continent, 'is greater than 70\n')
+  }
+
+}</code></pre>
+<pre><code>## Life Expectancy of Asia is less than 50
+## Life Expectancy of Europe is less than 50
+## Life Expectancy of Africa is less than 50
+## Life Expectancy of Americas is less than 50
+## Life Expectancy of Oceania is between 50 and 70</code></pre>
+</div>
+<div id="write-functions" class="section level3">
+<h3>Write Functions</h3>
+<p>Given a data frame, this function will print the name of each column and the class of data it contains.</p>
+<pre class="r"><code>coltypes &lt;- function(df) {
+  for (col in names(df)) {
+    cat('Column:', col, '\t\tType:', class(df[[col]]), '\n')
+  }
+}</code></pre>
+<p>Given a vector, this function will print the mean and the standard deviation of the vector, it will optionally also print the median.</p>
+<pre class="r"><code>vec.stats &lt;- function(vec, report.median=F) {
+  cat('Mean:', mean(vec), '\n')
+  cat('St. Dev:', sd(vec), '\n')
+  if (report.median) {
+    cat('Median:', median(vec))
+  }
+}</code></pre>
+</div>
+<div id="analyzing-the-relationship" class="section level3">
+<h3>Analyzing the Relationship</h3>
+<ol style="list-style-type: decimal">
+<li>What is the relationship between GDP per capita and life expectancy? Does this relationship change over time? (Hint: Use the natural log of both variables.)</li>
+</ol>
+<pre class="r"><code>print('Correlation between gdpPercap and lifeExp each year')</code></pre>
+<pre><code>## [1] &quot;Correlation between gdpPercap and lifeExp each year&quot;</code></pre>
+<pre class="r"><code>for (year in unique(gapminder$year)) {
+  gdp &lt;- gapminder$gdpPercap[gapminder$year == year]
+  le &lt;- gapminder$lifeExp[gapminder$year == year]
+  print(paste0(year, ': ', cor(gdp, le)))
+}</code></pre>
+<pre><code>## [1] &quot;1952: 0.278023621062317&quot;
+## [1] &quot;1957: 0.303744503998097&quot;
+## [1] &quot;1962: 0.383221061926961&quot;
+## [1] &quot;1967: 0.480139789527731&quot;
+## [1] &quot;1972: 0.459701395203974&quot;
+## [1] &quot;1977: 0.619863846024395&quot;
+## [1] &quot;1982: 0.722762853811143&quot;
+## [1] &quot;1987: 0.749905406709913&quot;
+## [1] &quot;1992: 0.704714829536974&quot;
+## [1] &quot;1997: 0.703643585188825&quot;
+## [1] &quot;2002: 0.681857787794637&quot;
+## [1] &quot;2007: 0.678662398677759&quot;</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Does the relationship between GDP per capita and life expectacy vary by continent? Make sure you divide the Americas into North and South America.</li>
+</ol>
+<pre class="r"><code># Recode 'Americas' as 'South America' and then label United States and Canada as 'North America'
+gapminder$continent[gapminder$continent == 'Americas'] &lt;- 'South America'
+gapminder$continent[gapminder$country == 'Canada' | gapminder$country == 'United States'] &lt;- 'North America'
+
+for (continent in unique(gapminder$continent)) {
+  gdp &lt;- gapminder$gdpPercap[gapminder$continent == continent]
+  le &lt;- gapminder$lifeExp[gapminder$continent == continent]
+  print(paste0(continent, ': ', cor(gdp, le)))
+}</code></pre>
+<pre><code>## [1] &quot;Asia: 0.382047603321768&quot;
+## [1] &quot;Europe: 0.780783111514666&quot;
+## [1] &quot;Africa: 0.425607573765059&quot;
+## [1] &quot;South America: 0.638733825889262&quot;
+## [1] &quot;Oceania: 0.956473848429961&quot;
+## [1] &quot;North America: 0.881496123536779&quot;</code></pre>
+</div>
+</div>
 
 
 
